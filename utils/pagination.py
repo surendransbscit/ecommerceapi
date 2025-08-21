@@ -1,7 +1,7 @@
 from rest_framework.response import Response
 
 def paginate_queryset(queryset, request, serializer_class):
-    print("Pquary",request, queryset, serializer_class)
+    # print("Pquary",request, queryset, serializer_class)
     # Get params
     page = int(request.query_params.get("page", 1))
     page_size = int(request.query_params.get("page_size", 10))
@@ -16,8 +16,8 @@ def paginate_queryset(queryset, request, serializer_class):
 
     # Serialize
     serializer = serializer_class(queryset, many=True)
-    print("serializer", serializer)
-    print("serializer oda data", serializer.data)
+    # print("serializer", serializer)
+    # print("serializer oda data", serializer.data)
 
     return Response({
         "total_records": total_records,

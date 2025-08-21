@@ -23,19 +23,19 @@ class LoginAPIView(generics.GenericAPIView):
     def post(self, request):
         username = request.data.get("username")
         password = request.data.get("password")
-        print(User)
+        # print(User)
 
         user = User.objects.filter(username=username).first() # Use first() to get a single user or None
-        print("user", user)
+        # print("user", user)
         if not user:
             return Response({"error": "Invalid username"}, status=status.HTTP_400_BAD_REQUEST)
         if not user.check_password(password):
             return Response({"error": "Invalid password"}, status=status.HTTP_400_BAD_REQUEST)
         
         token = AuthToken.objects.create(user)[1]
-        print(UserSerializer)
-        print("user data", UserSerializer(user).data)
-        print("token", token)
+        # print(UserSerializer)
+        # print("user data", UserSerializer(user).data)
+        # print("token", token)
         return Response({"user": UserSerializer(user).data, "token": token})
 
 
@@ -57,19 +57,19 @@ class CategoryListCreateView(generics.ListCreateAPIView):
 
 
     def get(self, request):
-        print(request)
+        # print(request)
         queryset = self.get_queryset()
-        print(queryset)
-        print(self.serializer_class)
+        # print(queryset)
+        # print(self.serializer_class)
         return paginate_queryset(queryset, request, self.serializer_class)
 
     def post(self, request):
-        print("request iruthu get", request.data)
+        # print("request iruthu get", request.data)
         serializer = self.serializer_class(data=request.data)
-        print("serializer", serializer)
+        # print("serializer", serializer)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print("serializer data", serializer.data)
+        # print("serializer data", serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -79,31 +79,31 @@ class CategoryDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CategorySerializer
 
     def get(self, request, pk):
-        print(request)
-        print(self.get_queryset())
+        # print(request)
+        # print(self.get_queryset())
         category = get_object_or_404(self.get_queryset(), pk=pk)# get_queryset based on pk used get object illa naa 404 error
-        print("category", category)
+        # print("category", category)
         serializer = self.serializer_class(category)
-        print("serializer", serializer.data)
+        # print("serializer", serializer.data)
         return Response(serializer.data)
 
     def put(self, request, pk):
         category = get_object_or_404(self.get_queryset(), pk=pk)
-        print("category", category)
+        # print("category", category)
         serializer = self.serializer_class(category, data=request.data, partial=True)
-        print("serializer", serializer)
+        # print("serializer", serializer)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        print("serializer data", serializer.data)
+        # print("serializer data", serializer.data)
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        print("request", request)
+        # print("request", request)
         category = get_object_or_404(self.get_queryset(), pk=pk)
-        print("category", category)
+        # print("category", category)
         category.delete()
-        if category is not None:
-            print("delete")
+        # if category is not None:
+            # print("delete")
         return Response({f"message":"delete successfully"},status=status.HTTP_204_NO_CONTENT)
 
 
@@ -159,7 +159,7 @@ class ProductListCreateView(generics.ListCreateAPIView):
 
     def get(self, request):
         products = self.queryset
-        print("products", products)
+        # print("products", products)
 
         # Filtering by category
         category_name = request.GET.get("category_name")
@@ -206,7 +206,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductSerializer
 
     def get(self, request, pk):
-        print("request", request)
+        # print("request", request)
         product = get_object_or_404(self.get_queryset(), pk=pk)
         serializer = self.serializer_class(product)
         return Response(serializer.data)
@@ -219,7 +219,7 @@ class ProductDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        print("request", request)
+        # print("request", request)
         product = get_object_or_404(self.get_queryset(), pk=pk)
         product.delete()
         return Response({"message":"Delete Successfully"},status=status.HTTP_204_NO_CONTENT)
@@ -261,9 +261,9 @@ class ProductImageDetailView(generics.RetrieveUpdateDestroyAPIView):
         return Response(serializer.data)
 
     def delete(self, request, pk):
-        print("request", request)
+        # print("request", request)
         img = get_object_or_404(self.get_queryset(), pk=pk)
-        print("img", img)
+        # print("img", img)
         img.delete()
         return Response({"message":"Delete Successfully"},status=status.HTTP_204_NO_CONTENT)
 
@@ -285,7 +285,7 @@ class ProfileDetailView(generics.RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
 
     def get(self, request):
-        print("req val",request.user)
+        # print("req val",request.user)
         try:
             profile = Profile.objects.get(user=request.user)
         except Profile.DoesNotExist:
